@@ -1,9 +1,12 @@
 import React from 'react'
+import Search from './Search';
+import Result from './Result';
 
 const Weather = () => {
   return (
-    <div className='text-blue-500 text-7xl my-24'>
-      this is second page of App
+    <div className='w-full'>
+      <Search />
+      {/* <Result /> */}
     </div>
   )
 }
