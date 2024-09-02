@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import position from "../images/position.png";
 import Result from "./Result";
 
 const Search = () => {
@@ -76,7 +77,7 @@ const Search = () => {
 
   return (
     <>
-      <div className="w-4/5 mx-auto bg-blue-200 flex mt-10 justify-between items-center p-6 font-title">
+      <div className="flex mt-10 justify-between items-center p-6 font-title">
         {/* <input
           className="border-2 border-black rounded-lg p-2 w-1/4"
           type="text"
@@ -102,13 +103,24 @@ const Search = () => {
           onChange={(e) => setLongitude(e.target.value)}
         />
         {" "}
-        <button
+        {/* <button
           className="border-2 bg-slate-600 rounded-md p-2 text-white"
           onClick={() => { locationHandler() }}
         >
           location
-        </button>
-        <input type="datetime-local" value={datetime} onChange={(e) => setDatetime(e.target.value)}></input>
+        </button> */}
+        <img
+          className="w-6 h-6 cursor-pointer"
+          src={position}
+          alt="positionImg"
+          onClick={() => { locationHandler() }}
+        />
+        <input
+          className="border border-black rounded-lg p-2 w-1/5"
+          type="datetime-local"
+          value={datetime}
+          onChange={(e) => setDatetime(e.target.value)}>
+        </input>
         <button
           className="border-2 bg-slate-600 rounded-md p-2 text-white"
           onClick={() => { handleFetchWeather() }}
@@ -122,7 +134,7 @@ const Search = () => {
           <Result data={weather} />
 
           // <>this sjsj</>
-          : <></>}
+          : <>Please provide the correct information</>}
       </div>
     </>
   );

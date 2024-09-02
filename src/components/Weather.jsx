@@ -4,7 +4,7 @@ import Result from './Result';
 
 const Weather = () => {
   return (
-    <div className='w-full'>
+    <div className='w-full  bg-blue-100 '>
       <Search />
       {/* <Result /> */}
     </div>

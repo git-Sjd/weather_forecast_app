@@ -1,109 +1,51 @@
 import React, { useState } from 'react';
-import { IoLocationOutline } from "react-icons/io5";
-import { Search } from "../components/Search"
+import location from "../images/location.png";
+import { Search } from "../components/Search";
+
 
 const Result = ({ data }) => {
   console.log('data : ', data)
 
 
   return (
-    <div className='w-4/5 mx-auto bg-blue-700 mt-6 text-white font-title'>
-      <div>
-        <IoLocationOutline className='w-6 h-6 ' />
-        <div></div>
+    <div className=" mt-6 text-white font-title p-4">
+      <div className='bg-blue-400 rounded-2xl flex justify-between p-6'>
+        <div>
+          <h2>{data.periods[0].detailedForecast}</h2>
+          <div>Temperature : {data.periods[0].temperature}°{' ' + data.periods[0].temperatureUnit}</div>
+          <div>Wind Speed: {data.periods[0].windSpeed}</div>
+        </div>
+        <div>
+          <img className="rounded-full" src={data.periods[0].icon} />
+          < div > {data.periods[0].shortForecast}</div >
+        </div >
+      </div >
+      <h2 className='my-4 text-3xl font-bold text-black'>Next 12 Forecast</h2>
+      <div className='grid grid-cols-5 font-title rounded-2xl'>
+        {data.periods.slice(1).map((items, id) => {
+          return <div className='bg-gray-500 rounded-lg px-2 py-4 space-y-2 m-1' >
+            <div className='flex justify-center text-2xl font-semibold'>{items.name}</div>
+
+            <img className="w-20 h-20 mx-auto rounded-full" src={items.icon} />
+            <div>{items.shortForecast}</div>
+            {/* <h2>Partly sunny, with a high near 76. South wind around 12 mph.</h2> */}
+            <div>Temp: {items.temperature}°{' ' + items.temperatureUnit}</div>
+            <div>Wind: {items.windSpeed}</div>
+          </div>
+
+        })}
       </div>
-      <div className=''>
+
+
+
+      {/* <div className=''>
         {data.periods.map((a) => { return <div className='text-5xl font-bold'>Temprature :{a.name} </div> })}
         <span className='text-5xl font-bold'>15 </span>
-      </div>
-    </div>
+      </div> */}
+    </div >
   )
 }
 
 export default Result;
 
 
-// import React, { useState } from 'react';
-
-// const WeatherApp = () => {
-//   const [latitude, setLatitude] = useState('');
-//   const [longitude, setLongitude] = useState('');
-//   const [datetime, setDatetime] = useState('');
-//   const [weather, setWeather] = useState(null);
-//   const [error, setError] = useState('');
-
-//   const handleFetchWeather = async () => {
-//     if (!latitude || !longitude || !datetime) {
-//       setError('Please provide all inputs.');
-//       return;
-//     }
-
-//     try {
-//       setError('');
-//       const pointResponse = await fetch(`https://api.weather.gov/points/${latitude},${longitude}`);
-//       if (!pointResponse.ok) {
-//         throw new Error('Failed to fetch point data');
-//       }
-
-//       const pointData = await pointResponse.json();
-//       const forecastUrl = pointData.properties.forecast;
-
-//       const forecastResponse = await fetch(forecastUrl);
-//       if (!forecastResponse.ok) {
-//         throw new Error('Failed to fetch forecast data');
-//       }
-
-//       const forecastData = await forecastResponse.json();
-//       const forecast = forecastData.properties.periods.find(period =>
-//         period.startTime.includes(datetime)
-//       );
-//       console.log('forecast: ', forecastData)
-
-//       if (forecast) {
-//         setWeather(forecast);
-//       } else {
-//         setError('No forecast data available for the given date/time.');
-//       }
-//     } catch (err) {
-//       setError('Failed to fetch weather data. Please check the input values.');
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <h1>Weather Forecast</h1>
-
-//       <div>
-//         <input
-//           type="text"
-//           placeholder="Latitude (e.g., 38.2527)"
-//           value={latitude}
-//           onChange={(e) => setLatitude(e.target.value)}
-//         />
-//         <input
-//           type="text"
-//           placeholder="Longitude (e.g., -85.7585)"
-//           value={longitude}
-//           onChange={(e) => setLongitude(e.target.value)}
-//         />
-//         <input
-//           type="datetime-local"
-//           value={datetime}
-//           onChange={(e) => setDatetime(e.target.value)}
-//         />
-//         <button onClick={handleFetchWeather}>Get Weather</button>
-//       </div>
-
-//       {error && <p style={{ color: 'red' }}>{error}</p>}
-
-//       {weather && (
-//         <div>
-//           <h2>Forecast for {weather.startTime}</h2>
-//           <p>{weather.temperature}° {weather.temperatureUnit}</p>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default WeatherApp;
