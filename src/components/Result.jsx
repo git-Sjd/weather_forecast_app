@@ -4,7 +4,6 @@ import { Search } from "../components/Search";
 
 
 const Result = ({ data }) => {
-  // console.log('data : ', data)
 
 
   return (
