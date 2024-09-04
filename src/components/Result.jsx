@@ -4,7 +4,7 @@ import { Search } from "../components/Search";
 
 
 const Result = ({ data }) => {
-  console.log('data : ', data)
+  // console.log('data : ', data)
 
 
   return (
@@ -35,13 +35,6 @@ const Result = ({ data }) => {
 
         })}
       </div>
-
-
-
-      {/* <div className=''>
-        {data.periods.map((a) => { return <div className='text-5xl font-bold'>Temprature :{a.name} </div> })}
-        <span className='text-5xl font-bold'>15 </span>
-      </div> */}
     </div >
   )
 }

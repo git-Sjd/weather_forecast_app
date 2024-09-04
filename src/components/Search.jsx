@@ -10,9 +10,11 @@ const Search = () => {
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [dateData, setdateData] = useState("");
+  const [show, setShow] = useState("");
 
   const handleFetchWeather = async () => {
-    if (!latitude || !longitude || !datetime) {
+    if (!latitude || !longitude) {
       setError('Please provide all inputs.');
       return;
     }
@@ -34,9 +36,7 @@ const Search = () => {
 
       const forecastData = await forecastResponse.json();
       const forecast = forecastData.properties
-      // .periods.find(period =>
-      //   period.startTime.includes(datetime)
-      // );
+
       if (forecast) {
         setWeather(forecast);
       } else {
@@ -49,6 +49,26 @@ const Search = () => {
     }
 
   }
+
+
+
+  function filterWeatherDataByDateTime(periods, selectedDateTime) {
+    const matchingPeriod = periods.find(period => {
+      const startTime = new Date(period.startTime);
+      const endTime = new Date(period.endTime);
+      console.log('123', startTime, endTime, new Date(selectedDateTime))
+
+      return new Date(selectedDateTime) >= startTime && new Date(selectedDateTime) <= endTime;
+    });
+    return matchingPeriod || null;
+
+  }
+
+  const handleFilterData = () => {
+    const filtered = filterWeatherDataByDateTime(weather.periods, datetime);
+    setdateData(filtered);
+
+  };
 
 
   const locationHandler = () => {
@@ -77,7 +97,7 @@ const Search = () => {
             <p className="mt-1 font-semibold text-2xl">Latitude : </p>
             <input
               className="border border-black rounded-lg p-2 ml-2"
-              placeholder="latitude"
+              placeholder="e.g. 38.2527"
               type="number"
               value={latitude}
               onChange={(e) => {
@@ -90,7 +110,7 @@ const Search = () => {
             <p className="mt-1 font-semibold text-2xl">Longitute : </p>
             <input
               className="border border-black rounded-lg p-2 ml-2"
-              placeholder="longitude"
+              placeholder="e.g. -85.7585"
               type="number"
               value={longitude}
               onChange={(e) => {
@@ -107,22 +127,6 @@ const Search = () => {
               onClick={() => { locationHandler() }}
             />
           </div>
-        </div>
-
-        <div className="flex">
-          <p className="mt-1 font-semibold text-2xl">Date & Time :</p>
-
-          <input
-            className="border border-black rounded-lg p-2 ml-3"
-            type="datetime-local"
-            value={datetime}
-            onChange={(e) => {
-              setDatetime(e.target.value);
-              setError('');
-            }}>
-          </input>
-        </div>
-        <div className="mr-20">
           <button
             className="border-2 bg-slate-600 rounded-xl p-2 text-white text-xl font-semibold"
             onClick={() => { handleFetchWeather() }}
@@ -132,10 +136,61 @@ const Search = () => {
           </button>
         </div>
 
+        {weather && <div className="flex">
+
+          <div className="flex">
+            <p className="mt-1 font-semibold text-2xl">Date & Time :</p>
+
+            <input
+              className="border border-black rounded-lg p-2 ml-3"
+              type="datetime-local"
+              value={datetime}
+              onChange={(e) => {
+                setDatetime(e.target.value);
+                setError('');
+              }}>
+            </input>
+          </div>
+          <div className="">
+
+            <button
+              className="border-2 bg-slate-600 rounded-xl p-2 text-white text-xl font-semibold"
+              onClick={() => {
+                handleFilterData()
+              }}
+            >
+              Search By date
+            </button>
+          </div>
+        </div>}
+
       </div >
       <div>
+        {
+          // <div className='bg-blue-400 rounded-2xl flex justify-between p-6'>
+          //   <div>
+          //     <div className='text-lg'>{dateData.detailedForecast}</div>
+          //     <div className='font-semibold'>Temperature : {dateData.temperature}°{' ' + dateData.temperatureUnit}</div>
+          //     <div className='font-semibold'>Wind Speed: {dateData.windSpeed}</div>
+          //   </div>
+          //   <div className='mr-10'>
+          //     <img className="rounded-full" src={dateData.icon} />
+          //     < div className='ml-5 text-xl font-semibold'> {dateData.shortForecast}</div >
+          //   </div >
+          //</div >
+          dateData === null ? <div className="font-title font-semibold text-xl text-red-600 flex justify-center">No forecast data available for the given date/time.</div> :
+            weather && dateData ? <div className='bg-gray-500 rounded-lg pl-5 py-4 space-y-2 m-1 w-1/3 mx-auto text-white font-title' >
+              <div className='flex justify-center text-2xl font-semibold'>{dateData.name}</div>
+              <img className="w-20 h-20 mx-auto rounded-full" src={dateData.icon} />
+              <div className='text-xl font-semibold'>{dateData.shortForecast}</div>
+              {/* <h2>Partly sunny, with a high near 76. South wind around 12 mph.</h2> */}
+              <div className='text-lg font-semibold'>Temp: {dateData.temperature}°{' ' + dateData.temperatureUnit}</div>
+              <div className='text-lg font-semibold'>Wind: {dateData.windSpeed}</div>
+            </div> : ''
+        }
+
         {loading ? (
-          <div className="font-title font-semibold text-xl text-blue-600 flex justify-center">
+          <div className="font-title font-semibold text-xl text-blue-600 flex justify-center" >
             <p>Loading...</p>
           </div>
         ) : weather ? (
@@ -147,7 +202,7 @@ const Search = () => {
             </div>
           )
         )}
-      </div>
+      </div >
     </>
   );
 };
