@@ -3,7 +3,6 @@ import position from "../images/position.png";
 import Result from "./Result";
 
 const Search = () => {
-  const [city, setCity] = useState("");
   const [longitude, setLongitude] = useState("");
   const [latitude, setLatitude] = useState("");
   const [datetime, setDatetime] = useState('');
@@ -11,7 +10,6 @@ const Search = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [dateData, setdateData] = useState("");
-  const [show, setShow] = useState("");
 
   const handleFetchWeather = async () => {
     if (!latitude || !longitude) {
@@ -31,7 +29,7 @@ const Search = () => {
 
       const forecastResponse = await fetch(forecastUrl);
       if (!forecastResponse.ok) {
-        throw new alert('Failed to fetch forecast data');
+        throw new Error('Failed to fetch forecast data');
       }
 
       const forecastData = await forecastResponse.json();
