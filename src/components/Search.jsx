@@ -183,7 +183,6 @@ const Search = () => {
               <div className='flex justify-center text-2xl font-semibold'>{dateData.name}</div>
               <img className="w-20 h-20 mx-auto rounded-full" src={dateData.icon} />
               <div className='text-xl font-semibold'>{dateData.shortForecast}</div>
-              {/* <h2>Partly sunny, with a high near 76. South wind around 12 mph.</h2> */}
               <div className='text-lg font-semibold'>Temp: {dateData.temperature}°{' ' + dateData.temperatureUnit}</div>
               <div className='text-lg font-semibold'>Wind: {dateData.windSpeed}</div>
             </div> : ''
