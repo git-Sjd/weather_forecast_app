@@ -23,7 +23,7 @@ const Search = () => {
       setError('');
       const pointResponse = await fetch(`https://api.weather.gov/points/${latitude},${longitude}`);
       if (!pointResponse.ok) {
-        throw new alert('Failed to fetch point data');
+        throw new Error('Failed to fetch point data');
       }
 
       const pointData = await pointResponse.json();
