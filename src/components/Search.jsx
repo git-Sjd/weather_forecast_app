@@ -11,6 +11,13 @@ const Search = () => {
   const [loading, setLoading] = useState(false);
   const [dateData, setdateData] = useState("");
 
+
+  // useEffect(() => {
+  //   if (latitude && longitude) {
+  //     handleFetchWeather();
+  //   }
+  // }, [latitude, longitude]);
+
   const handleFetchWeather = async () => {
     if (!latitude || !longitude) {
       setError('Please provide all inputs.');
@@ -20,6 +27,7 @@ const Search = () => {
     try {
       setError('');
       const pointResponse = await fetch(`https://api.weather.gov/points/${latitude},${longitude}`);
+      console.log(pointResponse, "pointResponse");
       if (!pointResponse.ok) {
         throw new Error('Failed to fetch point data');
       }
@@ -33,14 +41,17 @@ const Search = () => {
       }
 
       const forecastData = await forecastResponse.json();
+      console.log(forecastData, "forecastData");
       const forecast = forecastData.properties
 
       if (forecast) {
+        console.log('abcd', forecast)
         setWeather(forecast);
       } else {
         setError('No forecast data available for the given date/time.');
       }
     } catch (err) {
+      setWeather('')
       setError('Data Unavailable For Requested Point');
     } finally {
       setLoading(false);
@@ -65,12 +76,10 @@ const Search = () => {
   const handleFilterData = () => {
     const filtered = filterWeatherDataByDateTime(weather.periods, datetime);
     setdateData(filtered);
-
   };
 
 
   const locationHandler = () => {
-    setCity('');
     setLongitude('');
     setLatitude('');
     if (navigator.geolocation) {
